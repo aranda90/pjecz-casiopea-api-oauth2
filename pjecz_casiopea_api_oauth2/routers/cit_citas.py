@@ -211,6 +211,7 @@ async def crear(
         "correoElectronico": current_user.email,
         "telefono": f"+52{current_user.telefono}",
         "fecha": inicio_dt.isoformat(timespec="minutes"),
+        "cita": True,
     }
     try:
         respuesta = requests.post(
