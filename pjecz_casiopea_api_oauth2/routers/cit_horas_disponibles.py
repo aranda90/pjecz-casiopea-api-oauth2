@@ -141,6 +141,15 @@ def listar_horas_disponibles(
         # Siguiente intervalo
         tiempo = tiempo + duracion
 
+    # --- FORZAR HORAS SI ES HOY (PARA PRUEBAS) ---
+    if fecha == date.today():
+        # Si la lista está vacía o quieres ver horas específicas
+        if not horas_minutos_segundos_disponibles:
+            horas_minutos_segundos_disponibles = [
+                time(9, 0), time(10, 0), time(11, 0)
+            ]
+    # --------------------------------------------
+
     # Entregar
     return horas_minutos_segundos_disponibles
 
@@ -181,9 +190,14 @@ async def listado(
         return ListCitHoraDisponibleOut(success=False, message="No está habilitado ese servicio")
 
     # Validar la fecha
-    if fecha not in listar_dias_disponibles(database, settings):
-        return ListCitHoraDisponibleOut(success=False, message="La fecha proporcionada no es válida")
+    # if fecha not in listar_dias_disponibles(database, settings):
+    #     return ListCitHoraDisponibleOut(success=False, message="La fecha proporcionada no es válida")
 
+    # O CAMBIALO POR ESTO (Más profesional):
+    is_debug = getattr(settings, "DEBUG_ALLOW_TODAY", False)
+    if not is_debug and fecha not in listar_dias_disponibles(database, settings):
+        return ListCitHoraDisponibleOut(success=False, message="La fecha proporcionada no es válida")
+    print(is_debug)
     # Listar las horas disponibles
     horas_minutos_segundos_disponibles = listar_horas_disponibles(
         database=database,

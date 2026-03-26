@@ -35,6 +35,7 @@ class Settings(BaseSettings):
     SENDGRID_FROM_EMAIL: str = os.getenv("SENDGRID_FROM_EMAIL", "")
     TASK_QUEUE: str = os.getenv("TASK_QUEUE", "pjecz_casiopea")
     TZ: str = os.getenv("TZ", "America/Mexico_City")
+    DEBUG_ALLOW_TODAY: bool = False
 
     class Config:
         """Load configuration"""
